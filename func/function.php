@@ -8,7 +8,7 @@
 
      function imageUpload($imagerequest){
       global $msgError;
-      $imagename = $_FILES[$imagerequest]['name'];
+      $imagename =rand(1,1000000) . $_FILES[$imagerequest]['name'];
       $imagetmp = $_FILES[$imagerequest]['tmp_name'];
       $imagesize = $_FILES[$imagerequest]['size'];
       $allowtExt = array("jpg", "gif" ,"png" , "pdf" , "mp3");
@@ -22,10 +22,19 @@
          $msgError[]= "Size";
       }
       if (empty($msgError)) {
-         move_uploaded_file($imagetmp,"upload/" . $imagename);
+         move_uploaded_file($imagetmp, "../upload/" . $imagename);
+         return $imagename;
       }else{
-         print_r($msgError);
+         return "fail";
       }
+     }
+
+
+     function deletefile($dir , $imagename){
+      if (file_exists($dir . "/" . $imagename)) {
+         unlink($dir . "/" . $imagename);
+      }
+
      }
 
 ?>
