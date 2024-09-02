@@ -5,10 +5,18 @@
      $notes_id     = filterRequest("notes_id");
      $notes_title   = filterRequest("notes_title") ;
      $notes_contant = filterRequest("notes_contant");
+     $imagename = filterRequest("notes_image");
 
-     $stmt = $con->prepare("UPDATE `notes` SET notes_title=?,notes_contant=? WHERE notes_id = ?");
+     if (isset($_FILES['notes_image'])) {
+          # code...
+          deletefile("../upload" , $imagename);
+          $imagename = imageUpload("notes_image");
+     }
 
-     $stmt->execute(array($notes_title,$notes_contant,$notes_id));
+
+     $stmt = $con->prepare("UPDATE `notes` SET notes_title=?,notes_contant=? , `notes_image` = ? WHERE notes_id = ?");
+
+     $stmt->execute(array($notes_title,$notes_contant,$imagename,$notes_id));
 
      $count = $stmt->rowCount();
 
